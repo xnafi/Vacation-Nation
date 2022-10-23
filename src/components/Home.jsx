@@ -1,10 +1,25 @@
 import React from "react";
-import { SwiperSlide } from "swiper/react";
-import Carousal from "./Carousal";
-// Import Swiper React components
+import { useLoaderData } from "react-router-dom";
+// import Carousal from "./Carousal";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css/bundle";
+
+// Import Swiper styles
+import "swiper/css";
+import "swiper/css/pagination";
+
+
+// import required modules
+import "swiper/css/effect-coverflow";
+import { EffectCoverflow, Mousewheel } from "swiper";
+
 
 
 const Home = () => {
+
+    const catagories = useLoaderData()
+    console.log(catagories);
+
     return (
         <>
             <div className='flex w-full h-screen bgSet bg-cover bg-center px-10'>
@@ -27,16 +42,57 @@ const Home = () => {
                                     ullamcorper velit. Nulla ligula nisi, imperdiet ut lacinia nec,
                                     tincidunt ut libero. Aenean feugiat non eros quis feugiat.
                                 </p>
-                            </div> 
+                            </div>
                         </SwiperSlide>
                     </div>
                     <div className="md:w-1/2 w-full lg:h-full h-1/2 flex justify-end items-end mb-4 ">
-                        <Carousal />
+
+                        <Swiper
+                            effect={"coverflow"}
+                            direction={"horizontal"}
+                            centeredSlides={true}
+                            slidesPerView={2}
+                            spaceBetween={20}
+                            mousewheel={true}
+                            coverflowEffect={{
+                                rotate: 50,
+                                stretch: 0,
+                                depth: 100,
+                                modifier: 1,
+                                slideShadows: true,
+                            }}
+                            modules={[EffectCoverflow, Mousewheel]}
+                            className="mySwiper h-full md:h-1/2 w-full"
+                        >
+                            {
+                                catagories.map((cata) =>
+                                    <>
+                                        <SwiperSlide className="rounded-2xl lg:h-1/2 h-full w-full">
+                                            <img src={cata.image} className='h-full w-full rounded-2xl z-10 absolute' alt="" />
+                                            <div className="w-full h-full justify-center items-center flex flex-col space-y-2">
+                                                <button className="title relative z-40 text-center flex justify-center items-center rounded-md text-4xl font-bold py-3  bg-gray-900 px-10 text-white hover:bg-white hover:text-gray-900" data-swiper-parallax="-300">
+                                                    {cata.name}
+                                                </button>
+                                                <button className="title relative z-40 text-center flex justify-center items-center rounded-md text-xl font-bold py-3  bg-gray-900 px-10 text-white hover:bg-white hover:text-gray-900" data-swiper-parallax="-300">
+                                                    {`SELECT`}
+                                                </button>
+                                            </div>
+
+                                        </SwiperSlide>
+                                    </>)
+                            }
+
+                        </Swiper>
                     </div>
+
+
                 </div>
 
 
             </div >
+
+
+
 
         </>
 
